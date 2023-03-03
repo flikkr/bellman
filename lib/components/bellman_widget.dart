@@ -1,53 +1,70 @@
+import 'package:bellman/components/bellman_provider.dart';
 import 'package:bellman/components/show_dialog.dart';
 import 'package:bellman/util/bellman_config.dart';
-import 'package:bellman/util/bellman_data.dart';
+import 'package:bellman/data/bellman_data.dart';
 import 'package:bellman/util/bellman_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Bellman extends StatefulWidget {
+class BellmanWidget extends StatefulWidget {
   final Widget child;
-  final BellmanConfig config;
+  final BellmanConfig? config;
   final BellmanData data;
 
-  Bellman({
+  const BellmanWidget({
     super.key,
     required this.child,
-    required this.config,
     required this.data,
-  })  : assert(!(config.showAlwaysOnAppStart && config.showOnceOnAppStart)),
-        assert(!(config.showAfterDuration != null && config.showAfterFunctionEnd != null));
+    this.config,
+  });
 
   @override
-  State<Bellman> createState() => _BellmanState();
+  State<BellmanWidget> createState() => _BellmanWidgetState();
 }
 
-class _BellmanState extends State<Bellman> {
-  late BellmanStorage bellmanStorage;
+class _BellmanWidgetState extends State<BellmanWidget> {
+  late BellmanConfig config;
+
+  @override
+  void initState() {
+    super.initState();
+    config = widget.config ?? BellmanConfig();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _showDialog(context),
-      builder: (context, snapshot) => widget.child,
+      future: SharedPreferences.getInstance(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final storage = BellmanStorage(sharedPreferences: snapshot.data!);
+          return Bellman(
+            config: config,
+            data: widget.data,
+            storage: storage,
+            child: FutureBuilder(
+              future: _showDialog(context, storage),
+              builder: (context, snapshot) => widget.child,
+            ),
+          );
+        } else {
+          // Sharedprefs not ready yet
+          return Container();
+        }
+      },
     );
   }
 
-  Future<void> _showDialog(BuildContext context) async {
-    final config = widget.config;
+  Future<void> _showDialog(BuildContext context, BellmanStorage storage) async {
     // check whether a dialog is currently being shown
     if (ModalRoute.of(context)?.isCurrent != true) {
       Navigator.pop(context);
     }
-    final sharedPreferences = await SharedPreferences.getInstance();
-    bellmanStorage = BellmanStorage(sharedPreferences: sharedPreferences);
-    if (config.showAlwaysOnAppStart) {
-      // return;
-    } else if (config.showOnceOnAppStart) {
-      if (bellmanStorage.hasSeenDialog(trackingId: config.trackingId)) {
-        return;
-      }
+    final dontShow = !config.showAlwaysOnAppStart && !config.showOnceOnAppStart;
+    final hasSeenDialog = config.showOnceOnAppStart && storage.hasSeenDialog(trackingId: config.trackingId);
+    if (dontShow || hasSeenDialog) {
+      return;
     }
     if (config.showAfterFunctionEnd != null) {
       config.showAfterFunctionEnd?.call();
@@ -57,9 +74,10 @@ class _BellmanState extends State<Bellman> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showBellmanDialog(
         context: context,
+        data: widget.data,
         transitionDuration: config.transitionDuration,
       ).then((_) {
-        bellmanStorage.setHasSeenDialog(hasSeen: true);
+        storage.setHasSeenDialog(hasSeen: true);
       });
     });
   }

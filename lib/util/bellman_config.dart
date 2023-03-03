@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:shared_preferences/shared_preferences.dart';
-
 class BellmanConfig {
   final String? trackingId;
   final bool showOnceOnAppStart;
@@ -16,11 +13,11 @@ class BellmanConfig {
     this.showAfterDuration,
     this.showAfterFunctionEnd,
     this.transitionDuration,
-  }) : assert(trackingId == null ? true : trackingId.isNotEmpty);
+  })  : assert(trackingId == null ? true : trackingId.isNotEmpty),
+        assert(!(showAlwaysOnAppStart && showOnceOnAppStart)),
+        assert(!(showAfterDuration != null && showAfterFunctionEnd != null));
 
   BellmanConfig copyWith({
-    String? apiKey,
-    String? projectId,
     String? trackingId,
     bool? showOnceOnAppStart,
     bool? showAlwaysOnAppStart,
@@ -28,8 +25,6 @@ class BellmanConfig {
     void Function()? showAfterFunctionEnd,
     Duration? transitionDuration,
   }) {
-    assert(apiKey?.isNotEmpty ?? true);
-    assert(projectId?.isNotEmpty ?? true);
     assert(trackingId == null ? true : trackingId.isNotEmpty);
     return BellmanConfig(
       trackingId: trackingId ?? this.trackingId,

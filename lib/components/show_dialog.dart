@@ -1,8 +1,10 @@
 import 'package:bellman/bellman.dart';
+import 'package:bellman/data/bellman_data.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showBellmanDialog({
   required BuildContext context,
+  BellmanData? data,
   WidgetBuilder? builder,
   bool barrierDismissible = true,
   Color barrierColor = Colors.black54,
@@ -12,6 +14,8 @@ Future<void> showBellmanDialog({
   Offset? anchorPoint,
   Duration? transitionDuration,
 }) {
+  data ??= Bellman.maybeOf(context)?.data;
+  assert(data != null, "Data must be provided to the Bellman widget or dialog directly");
   return showGeneralDialog(
     context: context,
     anchorPoint: anchorPoint,
@@ -19,7 +23,7 @@ Future<void> showBellmanDialog({
     barrierColor: barrierColor,
     barrierLabel: barrierLabel ?? '',
     pageBuilder: (context, animation, secondaryAnimation) {
-      return const BellmanDialog();
+      return BellmanDialog(data: data!);
     },
     transitionDuration: transitionDuration ?? const Duration(milliseconds: 300),
     routeSettings: routeSettings,

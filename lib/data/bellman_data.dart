@@ -1,4 +1,4 @@
-import 'package:bellman/components/bellman_category.dart';
+import 'package:bellman/data/bellman_category.dart';
 
 class BellmanData {
   final String title;
