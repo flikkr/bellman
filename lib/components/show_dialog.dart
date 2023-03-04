@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 Future<void> showBellmanDialog({
   required BuildContext context,
   BellmanData? data,
-  WidgetBuilder? builder,
+  Widget Function(BuildContext, Animation<double>, Animation<double>)? pageBuilder,
   bool barrierDismissible = true,
   Color barrierColor = Colors.black54,
   String? barrierLabel,
-  bool useSafeArea = true,
   RouteSettings? routeSettings,
   Offset? anchorPoint,
   Duration? transitionDuration,

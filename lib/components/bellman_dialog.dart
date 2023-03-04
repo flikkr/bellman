@@ -34,11 +34,28 @@ class BellmanDialog extends StatelessWidget {
               ),
               child: Text(
                 data.title,
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
             BellmanDialogContent(
               categories: data.categories,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(paddingValue),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Close'),
+                ),
+              ),
             ),
           ],
         ),

@@ -76,15 +76,54 @@ class _MyHomePageState extends State<MyHomePage> {
         categories: [
           BellmanCategory(
             displayTitle: "📣 Changelog",
-            content: BellmanMarkdown("Sample 1"),
+            content: BellmanChangelog(changelog: [
+              ChangelogData(
+                title: "🎉 New features",
+                changes: [
+                  "Added page for doing XYZ",
+                  "Added button to invite friends to join the app",
+                ],
+              ),
+              ChangelogData(
+                title: "🚀 Improvements",
+                changes: [
+                  "Improved layout on analytics screen",
+                  "Added button to easily access profile",
+                  "Added translations for French, Italian, and German"
+                ],
+              ),
+              ChangelogData(
+                title: "🐛 Bug fixes",
+                changes: [
+                  "Fixed crash when making payment",
+                  "Fixed infinite loading screen",
+                  "Fixed issue during login flow",
+                ],
+              ),
+            ]),
           ),
           BellmanCategory(
-            displayTitle: "🚀 Roadmap",
-            content: BellmanMarkdown("Sample 2"),
+            displayTitle: "📚 Markdown",
+            content: BellmanMarkdown(
+              markdown: markdown,
+            ),
           ),
           BellmanCategory(
-            displayTitle: "📅 Events",
-            content: BellmanMarkdown("Sample 3"),
+            displayTitle: "✨ Custom builder",
+            content: BellmanCustomBuilder(
+              builder: (context) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    children: const [
+                      Text('This is some custom flutter code!'),
+                      SizedBox(height: 10),
+                      FlutterLogo(size: 100),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -126,38 +165,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
                 child: const Text('Clear storage'),
-              )
-              // CheckboxListTile(
-              //   value: checkboxValue,
-              //   onChanged: (val) {
-              //     setState(() => checkboxValue = val
-              //   },
-              //   subtitle: !checkboxValue
-              //       ? Text(
-              //           'Required.',
-              //           style: TextStyle(color: Colors.red),
-              //         )
-              //       : null,
-              //   title: new Text(
-              //     'I agree.',
-              //     style: TextStyle(fontSize: 14.0),
-              //   ),
-              //   controlAffinity: ListTileControlAffinity.leading,
-              //   activeColor: Colors.green,
-              // ),
+              ),
             ],
           ),
         ),
-        floatingActionButton: Test(),
-        // floatingActionButton: FloatingActionButton.extended(
-        //   onPressed: () {
-        //     print(Bellman.maybeOf(context));
-        //     // showBellmanDialog(
-        //     //   context: context,
-        //     // );
-        //   },
-        //   label: const Text('Show dialog'),
-        // ),
+        floatingActionButton: const Fab(),
       ),
     );
   }
@@ -171,8 +183,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class Test extends StatelessWidget {
-  const Test({super.key});
+class Fab extends StatelessWidget {
+  const Fab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -184,3 +196,69 @@ class Test extends StatelessWidget {
     );
   }
 }
+
+const markdown = '''
+# Markdown syntax guide
+
+## Headers
+
+# This is a Heading h1
+## This is a Heading h2 
+###### This is a Heading h6
+
+## Emphasis
+
+*This text will be italic*  
+_This will also be italic_
+
+**This text will be bold**  
+__This will also be bold__
+
+_You **can** combine them_
+
+## Lists
+
+### Unordered
+
+* Item 1
+* Item 2
+* Item 2a
+* Item 2b
+
+### Ordered
+
+1. Item 1
+1. Item 2
+1. Item 3
+  1. Item 3a
+  1. Item 3b
+
+## Images
+
+![This is a alt text.](https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s "This is a sample image.")
+
+## Links
+
+You may be using [Markdown Live Preview](https://markdownlivepreview.com/).
+
+## Blockquotes
+
+> Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
+>
+>> Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
+
+## Tables
+
+| Left columns  | Right columns |
+| ------------- |:-------------:|
+| left foo      | right foo     |
+| left bar      | right bar     |
+| left baz      | right baz     |
+
+## Blocks of code
+
+```
+let message = 'Hello world';
+alert(message);
+```
+''';

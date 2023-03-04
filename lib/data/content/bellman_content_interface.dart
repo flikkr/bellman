@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
 
 abstract class IBellmanContent {
-  Widget display();
+  Widget display(BuildContext context);
 }

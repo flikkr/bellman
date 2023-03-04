@@ -33,8 +33,11 @@ class _BellmanDialogContentState extends State<BellmanDialogContent> {
         SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: paddingValue),
           scrollDirection: Axis.horizontal,
-          child: Row(
-            children: _mapCategoryToChip(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: paddingValue),
+            child: Row(
+              children: _mapCategoryToChip(),
+            ),
           ),
         ),
         SizedBox(
@@ -44,16 +47,9 @@ class _BellmanDialogContentState extends State<BellmanDialogContent> {
             physics: const NeverScrollableScrollPhysics(),
             children: widget.categories
                 .map(
-                  (category) => category.content?.display() ?? Container(),
+                  (category) => category.content?.display(context) ?? Container(),
                 )
                 .toList(),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(
-            left: paddingValue,
-            right: paddingValue,
-            bottom: paddingValue,
           ),
         ),
       ],
@@ -66,6 +62,7 @@ class _BellmanDialogContentState extends State<BellmanDialogContent> {
     for (int i = 0; i < categories.length; i++) {
       chips.add(
         ChoiceChip(
+          pressElevation: 4,
           label: Text(categories[i].displayTitle),
           selected: selectedIndex == i,
           onSelected: (value) {

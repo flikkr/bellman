@@ -1,13 +1,35 @@
 import 'package:bellman/data/content/bellman_content_interface.dart';
+import 'package:bellman/theme/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown/markdown.dart' as md;
 
 class BellmanMarkdown implements IBellmanContent {
-  final String rawMarkdown;
+  final String markdown;
+  // final MarkdownStyleSheet? markdownStyleSheet;
+  // final MarkdownTapLinkCallback? onTapLink;
 
-  BellmanMarkdown(this.rawMarkdown);
+  BellmanMarkdown({
+    required this.markdown,
+    // this.onTapLink,
+    // this.markdownStyleSheet,
+  });
 
   @override
-  Widget display() {
-    return Center(child: Text(rawMarkdown));
+  Widget display(BuildContext context) {
+    return Markdown(
+      data: markdown,
+      padding: const EdgeInsets.symmetric(horizontal: paddingValue),
+      // styleSheet: markdownStyleSheet,
+      // onTapLink: onTapLink,
+      selectable: true,
+      extensionSet: md.ExtensionSet(
+        md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+        [
+          md.EmojiSyntax(),
+          ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
+        ],
+      ),
+    );
   }
 }
