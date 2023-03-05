@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class BellmanWidget extends StatefulWidget {
   final Widget child;
   final BellmanConfig? config;
-  final BellmanData data;
+  final BellmanData? data;
 
   const BellmanWidget({
     super.key,
@@ -61,11 +61,9 @@ class _BellmanWidgetState extends State<BellmanWidget> {
     if (ModalRoute.of(context)?.isCurrent != true) {
       Navigator.pop(context);
     }
-    final dontShow = !config.showAlwaysOnAppStart && !config.showOnceOnAppStart;
-    final hasSeenDialog = config.showOnceOnAppStart && storage.hasSeenDialog();
-    if (dontShow || hasSeenDialog) {
-      return;
-    }
+    final dontShow = config.displayOption == AppStartDisplay.never;
+    final hasSeenDialog = config.displayOption == AppStartDisplay.once && storage.hasSeenDialog();
+    if (dontShow || hasSeenDialog) return;
     if (config.showAfterFunctionEnd != null) {
       config.showAfterFunctionEnd?.call();
     } else if (config.showAfterDuration != null) {

@@ -1,29 +1,30 @@
+enum AppStartDisplay {
+  once,
+  always,
+  never,
+}
+
 class BellmanConfig {
-  final bool showOnceOnAppStart;
-  final bool showAlwaysOnAppStart;
+  final AppStartDisplay? displayOption;
   final Duration? showAfterDuration;
   final void Function()? showAfterFunctionEnd;
   final Duration? transitionDuration;
 
   BellmanConfig({
-    this.showOnceOnAppStart = true,
-    this.showAlwaysOnAppStart = false,
+    this.displayOption = AppStartDisplay.once,
     this.showAfterDuration,
     this.showAfterFunctionEnd,
     this.transitionDuration,
-  })  : assert(!(showAlwaysOnAppStart && showOnceOnAppStart)),
-        assert(!(showAfterDuration != null && showAfterFunctionEnd != null));
+  }) : assert(!(showAfterDuration != null && showAfterFunctionEnd != null));
 
   BellmanConfig copyWith({
-    bool? showOnceOnAppStart,
-    bool? showAlwaysOnAppStart,
+    AppStartDisplay? displayOption,
     Duration? showAfterDuration,
     void Function()? showAfterFunctionEnd,
     Duration? transitionDuration,
   }) {
     return BellmanConfig(
-      showOnceOnAppStart: showOnceOnAppStart ?? this.showOnceOnAppStart,
-      showAlwaysOnAppStart: showAlwaysOnAppStart ?? this.showAlwaysOnAppStart,
+      displayOption: displayOption ?? this.displayOption,
       showAfterDuration: showAfterDuration ?? this.showAfterDuration,
       showAfterFunctionEnd: showAfterFunctionEnd ?? this.showAfterFunctionEnd,
       transitionDuration: transitionDuration ?? this.transitionDuration,

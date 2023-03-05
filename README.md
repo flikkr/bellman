@@ -13,15 +13,19 @@ You've probably seen this before, you log in to an app and are shown a dialog or
 - [ ] Custom builder
 - [ ] Display on separate page
 
-Bellman was built while trying to minimise dependencies on third-party packages, which is why
-it only uses essential packages to render markdown, or to access shared preferences.
-
 ## Usage
 
-Just wrap your root widget with the `BellmanWidget` to provide the functionality anywhere in your app.
+Just wrap your app with the `BellmanWidget` to provide functionality anywhere within your app.
 
 ```dart
+void main() {
+    runApp(
+        BellmanWidget(child: MyApp()),
+    );
+}
 ```
+
+Optionally, you can pass in a `BellmanConfig` object as parameter to configure the behaviour of Bellman according to your requirements.
 
 ### What can I use it for?
 
