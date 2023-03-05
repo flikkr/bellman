@@ -1,12 +1,11 @@
--->
-
 # 🛎️ Bellman
+---
 
-Make beautiful and informative in-app announcements to your users.
+Bellman is a UI library for Flutter that allows you to easily make in-app announcements to your users.
+
+You've probably seen this before, you log in to an app and are shown a dialog or pop-up with the new features and bug fixes since the last app version, or some important announcements before the main app experience. Bellman helps with all that, by abstracting away the implementation, you can have the same experience in your app by providing the data you want to show to your users.
 
 ## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
 
 - [ ] Deeplink to bellman
 - [ ] Style customisation
@@ -17,17 +16,11 @@ TODO: List what your package can do. Maybe include images, gifs, or videos.
 Bellman was built while trying to minimise dependencies on third-party packages, which is why
 it only uses essential packages to render markdown, or to access shared preferences.
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
 ## Usage
 
 Just wrap your root widget with the `BellmanWidget` to provide the functionality anywhere in your app.
 
 ```dart
-const like = 'sample';
 ```
 
 ### What can I use it for?
@@ -45,7 +38,27 @@ and you don't have to worry about how it's displayed to your users.
 When building an app, it's not unusual to update your users on any new developments such as features, bug fixes, improvements, etc. `BellmanChangelog` helps with that by making it easy to display those changes separated by category. 
 
 #### Markdown
-#### 
+
+#### Custom builder
+
+Sometimes you just want to do things your own way, we get that. `BellmanCustomBuilder` allows you to display your own Flutter widgets in however way you want. just supply a function to the `builder` method to get started.
+
+```dart
+BellmanCategory(
+    displayTitle: "✨ Custom builder",
+    content: BellmanCustomBuilder(
+        builder: (context) {
+            return Column(
+                children: const [
+                    Text('This is some custom flutter code!'),
+                    SizedBox(height: 10),
+                    FlutterLogo(size: 100),
+                ],
+            );
+        },
+    ),
+)
+```
 
 ### Customisation
 
