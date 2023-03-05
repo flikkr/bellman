@@ -77,7 +77,7 @@ class _BellmanWidgetState extends State<BellmanWidget> {
         data: widget.data,
         transitionDuration: config.transitionDuration,
       ).then((_) {
-        storage.setHasSeenDialog(hasSeen: true);
+        storage.setHasSeenDialog(true);
       });
     });
   }
