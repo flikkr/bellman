@@ -6,13 +6,13 @@ import 'package:markdown/markdown.dart' as md;
 
 class BellmanMarkdown implements IBellmanContent {
   final String markdown;
-  // final MarkdownStyleSheet? markdownStyleSheet;
-  // final MarkdownTapLinkCallback? onTapLink;
+  final MarkdownStyleSheet? markdownStyleSheet;
+  final MarkdownTapLinkCallback? onTapLink;
 
   BellmanMarkdown({
     required this.markdown,
-    // this.onTapLink,
-    // this.markdownStyleSheet,
+    this.onTapLink,
+    this.markdownStyleSheet,
   });
 
   @override
@@ -20,8 +20,8 @@ class BellmanMarkdown implements IBellmanContent {
     return Markdown(
       data: markdown,
       padding: const EdgeInsets.symmetric(horizontal: paddingValue),
-      // styleSheet: markdownStyleSheet,
-      // onTapLink: onTapLink,
+      styleSheet: markdownStyleSheet,
+      onTapLink: onTapLink,
       selectable: true,
       extensionSet: md.ExtensionSet(
         md.ExtensionSet.gitHubFlavored.blockSyntaxes,

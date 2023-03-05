@@ -2,19 +2,10 @@ import 'package:bellman/data/bellman_category.dart';
 import 'package:bellman/data/bellman_data.dart';
 import 'package:flutter/material.dart';
 import 'package:bellman/bellman.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'checkbox_field.dart';
 
-late final SharedPreferences sharedPref;
-
-const showAfterDurationKey = 'showAfterDuration';
-const showOnceOnAppStartKey = 'showOnceOnAppStar';
-const showAlwaysOnAppStartKey = 'showAlwaysOnAppStart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  sharedPref = await SharedPreferences.getInstance();
+void main() {
   runApp(const MyApp());
 }
 
@@ -56,15 +47,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    final showAfterDuration = sharedPref.getInt(showAfterDurationKey);
 
-    bellmanConfig = bellmanConfig.copyWith(
-      showAfterDuration: showAfterDuration == null
-          ? null
-          : Duration(
-              milliseconds: showAfterDuration,
-            ),
-    );
+    // bellmanConfig = bellmanConfig.copyWith(
+    //   showAfterDuration: showAfterDuration == null
+    //       ? null
+    //       : Duration(
+    //           milliseconds: showAfterDuration,
+    //         ),
+    // );
   }
 
   @override
@@ -140,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 initialValue: bellmanConfig.showAfterDuration?.inMilliseconds.toString(),
                 onChanged: (value) {
                   if (value.isEmpty) return;
-                  sharedPref.setInt(showAfterDurationKey, int.parse(value));
+                  // sharedPref.setInt(showAfterDurationKey, int.parse(value));
                 },
                 decoration: getInputDecoration('Open after delay (in ms)'),
               ),
@@ -158,12 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               gap,
               ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    sharedPref.clear();
-                    BellmanConfig();
-                  });
-                },
+                onPressed: () {},
                 child: const Text('Clear storage'),
               ),
             ],

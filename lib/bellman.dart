@@ -1,4 +1,4 @@
-library bellman_sdk;
+library bellman;
 
 export 'package:bellman/components/bellman_dialog.dart' show BellmanDialog;
 export 'package:bellman/components/bellman_widget.dart' show BellmanWidget;
@@ -9,3 +9,5 @@ export 'package:bellman/data/content/bellman_changelog.dart' show BellmanChangel
 export 'package:bellman/data/content/bellman_changelog_data.dart' show ChangelogData;
 export 'package:bellman/util/bellman_config.dart' show BellmanConfig;
 export 'package:bellman/components/show_dialog.dart' show showBellmanDialog;
+
+export 'package:flutter_markdown/flutter_markdown.dart';

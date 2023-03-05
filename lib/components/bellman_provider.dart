@@ -16,6 +16,10 @@ class Bellman extends InheritedWidget {
     this.data,
   });
 
+  void clearStorage() {
+    storage.clearStorage();
+  }
+
   static Bellman? maybeOf(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<Bellman>();
   }
@@ -24,12 +28,6 @@ class Bellman extends InheritedWidget {
     final Bellman? result = maybeOf(context);
     assert(result == null, 'No Bellman found in context');
     return result!;
-  }
-
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    oldWidget = oldWidget as Bellman;
-    return config != oldWidget.config || data != oldWidget.data || storage != oldWidget.storage;
   }
 
   Bellman copyWith({
@@ -44,5 +42,11 @@ class Bellman extends InheritedWidget {
       storage: storage ?? this.storage,
       child: child ?? this.child,
     );
+  }
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
+    oldWidget = oldWidget as Bellman;
+    return config != oldWidget.config || data != oldWidget.data || storage != oldWidget.storage;
   }
 }
