@@ -62,7 +62,7 @@ class _BellmanWidgetState extends State<BellmanWidget> {
       Navigator.pop(context);
     }
     final dontShow = config.displayOption == AppStartDisplay.never;
-    final hasSeenDialog = config.displayOption == AppStartDisplay.once && storage.hasSeenDialog();
+    final hasSeenDialog = config.displayOption == AppStartDisplay.once && storage.hasSeenDialog;
     if (dontShow || hasSeenDialog) return;
     if (config.showAfterFunctionEnd != null) {
       config.showAfterFunctionEnd?.call();
@@ -75,7 +75,7 @@ class _BellmanWidgetState extends State<BellmanWidget> {
         data: widget.data,
         transitionDuration: config.transitionDuration,
       ).then((_) {
-        storage.setHasSeenDialog(true);
+        storage.hasSeenDialog = true;
       });
     });
   }

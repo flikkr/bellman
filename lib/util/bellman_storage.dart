@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class BellmanStorage {
   static const seenKey = 'bellman-seen';
+  static const lastSeenVersionKey = 'last-seen-version';
 
   SharedPreferences sharedPreferences;
 
@@ -12,11 +13,25 @@ class BellmanStorage {
 
   Future<bool> clearStorage() => sharedPreferences.clear();
 
-  bool hasSeenDialog() {
+  bool get hasSeenDialog {
     return sharedPreferences.getBool(seenKey) ?? false;
   }
 
-  Future<void> setHasSeenDialog(bool hasSeen) async {
-    sharedPreferences.setBool(seenKey, hasSeen);
+  set hasSeenDialog(bool? hasSeen) {
+    if (hasSeen == null) {
+      sharedPreferences.remove(seenKey);
+    }
+    sharedPreferences.setBool(seenKey, hasSeen!);
+  }
+
+  String? get lastSeenVersion {
+    return sharedPreferences.getString(lastSeenVersionKey);
+  }
+
+  set lastSeenVersion(String? version) {
+    if (version == null) {
+      sharedPreferences.remove(lastSeenVersionKey);
+    }
+    sharedPreferences.setString(lastSeenVersionKey, version!);
   }
 }

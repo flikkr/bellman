@@ -40,6 +40,8 @@ class BellmanDialog extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).dialogBackgroundColor,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: kElevationToShadow[16],
             ),
             constraints: constraints ?? const BoxConstraints(maxWidth: 768),
             child: Column(
