@@ -62,7 +62,7 @@ class _BellmanWidgetState extends State<BellmanWidget> {
       Navigator.pop(context);
     }
     final dontShow = !config.showAlwaysOnAppStart && !config.showOnceOnAppStart;
-    final hasSeenDialog = config.showOnceOnAppStart && storage.hasSeenDialog(trackingId: config.trackingId);
+    final hasSeenDialog = config.showOnceOnAppStart && storage.hasSeenDialog();
     if (dontShow || hasSeenDialog) {
       return;
     }

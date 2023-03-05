@@ -2,7 +2,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BellmanStorage {
-  static const seenKey = 'saw-dialog';
+  static const seenKey = 'bellman-seen';
 
   SharedPreferences sharedPreferences;
 
@@ -12,21 +12,11 @@ class BellmanStorage {
 
   Future<bool> clearStorage() => sharedPreferences.clear();
 
-  bool hasSeenDialog({String? trackingId}) {
-    String key = _getFormattedKey(trackingId);
-    return sharedPreferences.getBool(key) ?? false;
+  bool hasSeenDialog() {
+    return sharedPreferences.getBool(seenKey) ?? false;
   }
 
-  Future<void> setHasSeenDialog({String? trackingId, required bool hasSeen}) async {
-    String key = _getFormattedKey(trackingId);
-    sharedPreferences.setBool(key, hasSeen);
-  }
-
-  String _getFormattedKey(String? trackingId) {
-    String key = seenKey;
-    if (trackingId != null && trackingId.isNotEmpty) {
-      key = '$trackingId-$key';
-    }
-    return key;
+  Future<void> setHasSeenDialog(bool hasSeen) async {
+    sharedPreferences.setBool(seenKey, hasSeen);
   }
 }
