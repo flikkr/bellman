@@ -1,7 +1,8 @@
+import 'dart:io';
+
 import 'package:bellman/data/bellman_category.dart';
 import 'package:bellman/theme/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class BellmanDialogContent extends StatefulWidget {
   final List<BellmanCategory> categories;
@@ -34,9 +35,9 @@ class _BellmanDialogContentState extends State<BellmanDialogContent> {
       mainAxisSize: MainAxisSize.min,
       children: [
         SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: paddingValue,
-            vertical: paddingValue / 2,
+            vertical: Platform.isAndroid || Platform.isIOS ? paddingValue / 2 : paddingValue,
           ),
           scrollDirection: Axis.horizontal,
           child: Row(

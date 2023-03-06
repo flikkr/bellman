@@ -174,16 +174,10 @@ final bellmanCategories = [
     content: BellmanCustomBuilder(
       builder: (context) {
         return Column(
-          children: [
+          children: const [
             Text('This is some custom flutter code!'),
             SizedBox(height: 10),
             FlutterLogo(size: 100),
-            SizedBox(height: 10),
-            Container(
-              color: Colors.red,
-              height: 500,
-              width: 50,
-            )
           ],
         );
       },
