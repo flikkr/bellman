@@ -29,62 +29,56 @@ class BellmanDialog extends StatelessWidget {
     double insetPaddingValue;
     if (screenSize.width < smallBreakpoint) {
       insetPaddingValue = 25.0;
-    } else if (screenSize.width < mediumBreakpoint) {
-      insetPaddingValue = 50.0;
     } else {
-      insetPaddingValue = 100.0;
+      insetPaddingValue = 50.0;
     }
     final dialogPadding = insetPadding ?? EdgeInsets.all(insetPaddingValue);
-    return Material(
-      color: Colors.transparent,
-      child: Center(
-        child: AnimatedPadding(
-          padding: dialogPadding,
-          duration: const Duration(milliseconds: 300),
-          child: Container(
-            decoration: BoxDecoration(
-              color: bellmanDialogStyle.dialogBackgroundColor ?? theme.dialogBackgroundColor,
-              borderRadius: bellmanDialogStyle.borderRadius ?? BorderRadius.circular(defaultDialogBorderRadius),
-              boxShadow: kElevationToShadow[16],
-            ),
-            clipBehavior: Clip.antiAlias,
-            constraints: constraints ?? const BoxConstraints(maxWidth: 768),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Material(
-                  color: theme.colorScheme.primary,
-                  child: Padding(
-                    padding: const EdgeInsets.all(paddingValue),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            data.title,
-                            style: bellmanDialogStyle.titleTextStyle ??
-                                theme.textTheme.headlineSmall?.copyWith(
-                                  color: theme.colorScheme.onPrimary,
-                                ),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          constraints: const BoxConstraints(),
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          icon: const Icon(Icons.close),
-                        ),
-                      ],
+    return Dialog(
+      insetPadding: dialogPadding,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: bellmanDialogStyle.borderRadius ?? BorderRadius.circular(10),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: bellmanDialogStyle.dialogBackgroundColor ?? theme.dialogBackgroundColor,
+          boxShadow: kElevationToShadow[16],
+        ),
+        constraints: constraints ?? const BoxConstraints(maxWidth: 600),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Material(
+              color: theme.colorScheme.primary,
+              child: Padding(
+                padding: const EdgeInsets.all(paddingValue),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        data.title,
+                        style: bellmanDialogStyle.titleTextStyle ??
+                            theme.textTheme.headlineSmall?.copyWith(
+                              color: theme.colorScheme.onPrimary,
+                            ),
+                      ),
                     ),
-                  ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      constraints: const BoxConstraints(),
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      icon: const Icon(Icons.close),
+                    ),
+                  ],
                 ),
-                BellmanDialogContent(
-                  categories: data.categories,
-                  height: 300,
-                ),
-              ],
+              ),
             ),
-          ),
+            BellmanDialogContent(
+              categories: data.categories,
+              height: 300,
+            ),
+          ],
         ),
       ),
     );
