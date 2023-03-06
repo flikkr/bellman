@@ -19,7 +19,11 @@ class BellmanMarkdown implements IBellmanContent {
   Widget display(BuildContext context) {
     return Markdown(
       data: markdown,
-      padding: const EdgeInsets.symmetric(horizontal: paddingValue),
+      padding: const EdgeInsets.only(
+        left: paddingValue,
+        right: paddingValue,
+        bottom: paddingValue,
+      ),
       styleSheet: markdownStyleSheet,
       onTapLink: onTapLink,
       selectable: true,

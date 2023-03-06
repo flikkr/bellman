@@ -5,10 +5,12 @@ import 'package:flutter/src/widgets/placeholder.dart';
 
 class BellmanDialogContent extends StatefulWidget {
   final List<BellmanCategory> categories;
+  final double height;
 
   const BellmanDialogContent({
     super.key,
     required this.categories,
+    required this.height,
   });
 
   @override
@@ -32,17 +34,17 @@ class _BellmanDialogContentState extends State<BellmanDialogContent> {
       mainAxisSize: MainAxisSize.min,
       children: [
         SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: paddingValue),
+          padding: const EdgeInsets.symmetric(
+            horizontal: paddingValue,
+            vertical: paddingValue / 2,
+          ),
           scrollDirection: Axis.horizontal,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: paddingValue),
-            child: Row(
-              children: _mapCategoryToChip(),
-            ),
+          child: Row(
+            children: _mapCategoryToChip(),
           ),
         ),
         SizedBox(
-          height: 300,
+          height: widget.height,
           child: PageView(
             controller: controller,
             physics: const NeverScrollableScrollPhysics(),

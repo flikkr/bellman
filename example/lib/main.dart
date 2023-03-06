@@ -63,59 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       config: bellmanConfig,
       data: BellmanData(
         title: "What's new!",
-        categories: [
-          BellmanCategory(
-            displayTitle: "📣 Changelog",
-            content: BellmanChangelog(changelog: [
-              ChangelogData(
-                title: "🎉 New features",
-                changes: [
-                  "Added page for doing XYZ",
-                  "Added button to invite friends to join the app",
-                ],
-              ),
-              ChangelogData(
-                title: "🚀 Improvements",
-                changes: [
-                  "Improved layout on analytics screen",
-                  "Added button to easily access profile",
-                  "Added translations for French, Italian, and German"
-                ],
-              ),
-              ChangelogData(
-                title: "🐛 Bug fixes",
-                changes: [
-                  "Fixed crash when making payment",
-                  "Fixed infinite loading screen",
-                  "Fixed issue during login flow",
-                ],
-              ),
-            ]),
-          ),
-          BellmanCategory(
-            displayTitle: "📚 Markdown",
-            content: BellmanMarkdown(
-              markdown: markdown,
-            ),
-          ),
-          BellmanCategory(
-            displayTitle: "✨ Custom builder",
-            content: BellmanCustomBuilder(
-              builder: (context) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    children: const [
-                      Text('This is some custom flutter code!'),
-                      SizedBox(height: 10),
-                      FlutterLogo(size: 100),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+        categories: bellmanCategories,
       ),
       child: Scaffold(
         appBar: AppBar(
@@ -175,12 +123,73 @@ class Fab extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
-        showBellmanDialog(context: context);
+        showBellmanDialog(
+          context: context,
+          // barrierDismissible: true,
+        );
       },
       label: const Text('Show dialog'),
     );
   }
 }
+
+final bellmanCategories = [
+  BellmanCategory(
+    displayTitle: "📣 Changelog",
+    content: BellmanChangelog(changelog: [
+      ChangelogData(
+        title: "🎉 New features",
+        changes: [
+          "Added page for doing XYZ",
+          "Added button to invite friends to join the app",
+        ],
+      ),
+      ChangelogData(
+        title: "🚀 Improvements",
+        changes: [
+          "Improved layout on analytics screen",
+          "Added button to easily access profile",
+          "Added translations for French, Italian, and German"
+        ],
+      ),
+      ChangelogData(
+        title: "🐛 Bug fixes",
+        changes: [
+          "Fixed crash when making payment",
+          "Fixed infinite loading screen",
+          "Fixed issue during login flow",
+          "Fixed layout issue on mobile",
+        ],
+      ),
+    ]),
+  ),
+  BellmanCategory(
+    displayTitle: "📚 Markdown",
+    content: BellmanMarkdown(
+      markdown: markdown,
+    ),
+  ),
+  BellmanCategory(
+    displayTitle: "✨ Custom builder",
+    content: BellmanCustomBuilder(
+      builder: (context) {
+        return Column(
+          children: [
+            Text('This is some custom flutter code!'),
+            SizedBox(height: 10),
+            FlutterLogo(size: 100),
+            SizedBox(height: 10),
+            Container(
+              color: Colors.red,
+              height: 500,
+              width: 50,
+            )
+          ],
+        );
+      },
+    ),
+  ),
+];
 
 const markdown = '''
 # Markdown syntax guide

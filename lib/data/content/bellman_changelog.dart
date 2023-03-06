@@ -15,6 +15,7 @@ class BellmanChangelog implements IBellmanContent {
   @override
   Widget display(BuildContext context) {
     final changelogData = ListView(
+      padding: const EdgeInsets.only(bottom: paddingValue),
       children: changelog
           .map(
             (data) => _displaySingleChangelog(
@@ -25,24 +26,9 @@ class BellmanChangelog implements IBellmanContent {
           .toList(),
     );
 
-    late Widget result;
-    if (appVersion != null) {
-      result = Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(appVersion!),
-          yGap,
-          changelogData,
-        ],
-      );
-    } else {
-      result = changelogData;
-    }
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: paddingValue),
-      child: result,
+      child: changelogData,
     );
   }
 

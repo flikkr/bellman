@@ -9,6 +9,7 @@ class BellmanDialog extends StatelessWidget {
   final BellmanDialogStyle? style;
   final EdgeInsets? insetPadding;
   final BoxConstraints? constraints;
+  final double contentHeight;
 
   const BellmanDialog({
     super.key,
@@ -16,11 +17,14 @@ class BellmanDialog extends StatelessWidget {
     this.style,
     this.insetPadding,
     this.constraints,
+    this.contentHeight = 300,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bellmanStyle = style ?? BellmanDialogStyle();
+    final theme = Theme.of(context);
+    final bellmanDialogStyle = style ?? BellmanDialogStyle();
+    final dialogTheme = theme.dialogTheme;
     final screenSize = MediaQuery.of(context).size;
     double insetPaddingValue;
     if (screenSize.width < smallBreakpoint) {
@@ -30,7 +34,7 @@ class BellmanDialog extends StatelessWidget {
     } else {
       insetPaddingValue = 100.0;
     }
-    final dialogPadding = insetPadding ?? EdgeInsets.symmetric(horizontal: insetPaddingValue);
+    final dialogPadding = insetPadding ?? EdgeInsets.all(insetPaddingValue);
     return Material(
       color: Colors.transparent,
       child: Center(
@@ -39,45 +43,44 @@ class BellmanDialog extends StatelessWidget {
           duration: const Duration(milliseconds: 300),
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).dialogBackgroundColor,
-              borderRadius: BorderRadius.circular(10),
+              color: bellmanDialogStyle.dialogBackgroundColor ?? theme.dialogBackgroundColor,
+              borderRadius: bellmanDialogStyle.borderRadius ?? BorderRadius.circular(defaultDialogBorderRadius),
               boxShadow: kElevationToShadow[16],
             ),
+            clipBehavior: Clip.antiAlias,
             constraints: constraints ?? const BoxConstraints(maxWidth: 768),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: paddingValue,
-                    right: paddingValue,
-                    top: paddingValue,
-                  ),
-                  child: Text(
-                    data.title,
-                    style: Theme.of(context).textTheme.headlineSmall,
+                Material(
+                  color: theme.colorScheme.primary,
+                  child: Padding(
+                    padding: const EdgeInsets.all(paddingValue),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            data.title,
+                            style: bellmanDialogStyle.titleTextStyle ??
+                                theme.textTheme.headlineSmall?.copyWith(
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          constraints: const BoxConstraints(),
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          icon: const Icon(Icons.close),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 BellmanDialogContent(
                   categories: data.categories,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(paddingValue),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                        ),
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Close'),
-                    ),
-                  ),
+                  height: 300,
                 ),
               ],
             ),
