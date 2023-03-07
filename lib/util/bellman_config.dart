@@ -1,3 +1,5 @@
+import 'package:bellman/util/bellman_dialog_config.dart';
+
 enum AppStartDisplay {
   once,
   always,
@@ -8,26 +10,26 @@ class BellmanConfig {
   final AppStartDisplay? displayOption;
   final Duration? showAfterDuration;
   final void Function()? showAfterFunctionEnd;
-  final Duration? transitionDuration;
+  final BellmanDialogConfig? dialogConfig;
 
   BellmanConfig({
     this.displayOption = AppStartDisplay.once,
     this.showAfterDuration,
     this.showAfterFunctionEnd,
-    this.transitionDuration,
+    this.dialogConfig,
   }) : assert(!(showAfterDuration != null && showAfterFunctionEnd != null));
 
   BellmanConfig copyWith({
     AppStartDisplay? displayOption,
     Duration? showAfterDuration,
     void Function()? showAfterFunctionEnd,
-    Duration? transitionDuration,
+    BellmanDialogConfig? dialogConfig,
   }) {
     return BellmanConfig(
       displayOption: displayOption ?? this.displayOption,
       showAfterDuration: showAfterDuration ?? this.showAfterDuration,
       showAfterFunctionEnd: showAfterFunctionEnd ?? this.showAfterFunctionEnd,
-      transitionDuration: transitionDuration ?? this.transitionDuration,
+      dialogConfig: dialogConfig ?? this.dialogConfig,
     );
   }
 }

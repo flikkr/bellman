@@ -5,6 +5,8 @@ Bellman is a UI library for Flutter that allows you to easily make in-app announ
 
 You've probably seen this before, you log in to an app and are shown a dialog or pop-up with the new features and bug fixes since the last app version, or some important announcements before the main app experience. Bellman helps with all that, by abstracting away the implementation, you can have the same experience in your app by providing the data you want to show to your users.
 
+> 🚨 WARNING! This package is still very early stage and experimental. APIs will likely change and cause breaking changes so I do not suggest you use this in any production application yet.
+
 ## Features
 
 - [ ] Deeplink to bellman
@@ -26,6 +28,16 @@ void main() {
 ```
 
 Optionally, you can pass in a `BellmanConfig` object as parameter to configure the behaviour of Bellman according to your requirements.
+
+```dart
+BellmanWidget(
+    config: BellmanConfig(
+        displayOption: AppStartDisplay.once,
+        showAfterDuration:,
+        showAfterFunctionEnd:,
+    ),
+)
+```
 
 ### What can I use it for?
 

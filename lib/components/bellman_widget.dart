@@ -69,11 +69,12 @@ class _BellmanWidgetState extends State<BellmanWidget> {
     } else if (config.showAfterDuration != null) {
       await Future.delayed(config.showAfterDuration!);
     }
+    final dialogConfig = config.dialogConfig;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showBellmanDialog(
         context: context,
         data: widget.data,
-        transitionDuration: config.transitionDuration,
+        transitionDuration: dialogConfig?.transitionDuration,
       ).then((_) {
         storage.hasSeenDialog = true;
       });
