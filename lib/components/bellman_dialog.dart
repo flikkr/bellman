@@ -1,4 +1,5 @@
 import 'package:bellman/components/bellman_dialog_content.dart';
+import 'package:bellman/components/bellman_dialog_header.dart';
 import 'package:bellman/theme/bellman_dialog_style.dart';
 import 'package:bellman/theme/constants.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,6 @@ class BellmanDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final bellmanDialogStyle = style ?? BellmanDialogStyle();
-    final dialogTheme = theme.dialogTheme;
     final screenSize = MediaQuery.of(context).size;
     double insetPaddingValue;
     if (screenSize.width < smallBreakpoint) {
@@ -49,30 +49,8 @@ class BellmanDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Material(
-              color: theme.colorScheme.primary,
-              child: Padding(
-                padding: const EdgeInsets.all(paddingValue),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        data.title,
-                        style: bellmanDialogStyle.titleTextStyle ??
-                            theme.textTheme.headlineSmall?.copyWith(
-                              color: theme.colorScheme.onPrimary,
-                            ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      constraints: const BoxConstraints(),
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      icon: const Icon(Icons.close),
-                    ),
-                  ],
-                ),
-              ),
+            BellmanDialogHeader(
+              title: data.title,
             ),
             BellmanDialogContent(
               categories: data.categories,

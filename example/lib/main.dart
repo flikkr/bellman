@@ -62,7 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return BellmanWidget(
       config: bellmanConfig,
       data: BellmanData(
-        title: "What's new!",
         categories: bellmanCategories,
       ),
       child: Scaffold(
