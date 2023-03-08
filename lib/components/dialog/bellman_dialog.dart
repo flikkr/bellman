@@ -1,5 +1,5 @@
-import 'package:bellman/components/bellman_dialog_content.dart';
-import 'package:bellman/components/bellman_dialog_header.dart';
+import 'package:bellman/components/dialog/bellman_dialog_content.dart';
+import 'package:bellman/components/dialog/bellman_dialog_header.dart';
 import 'package:bellman/theme/bellman_dialog_style.dart';
 import 'package:bellman/theme/constants.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,6 @@ class BellmanDialog extends StatelessWidget {
   final BellmanDialogStyle? style;
   final EdgeInsets? insetPadding;
   final BoxConstraints? constraints;
-  final double contentHeight;
 
   const BellmanDialog({
     super.key,
@@ -18,7 +17,6 @@ class BellmanDialog extends StatelessWidget {
     this.style,
     this.insetPadding,
     this.constraints,
-    this.contentHeight = 300,
   });
 
   @override
@@ -44,18 +42,13 @@ class BellmanDialog extends StatelessWidget {
           color: bellmanDialogStyle.dialogBackgroundColor ?? theme.dialogBackgroundColor,
           boxShadow: kElevationToShadow[16],
         ),
-        constraints: constraints ?? const BoxConstraints(maxWidth: 600),
+        constraints: constraints ?? const BoxConstraints(maxWidth: 600, minHeight: 400, maxHeight: 500),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            BellmanDialogHeader(
-              title: data.title,
-            ),
-            BellmanDialogContent(
-              categories: data.categories,
-              height: 300,
-            ),
+            BellmanDialogHeader(title: data.title),
+            Expanded(child: BellmanDialogContent(categories: data.categories)),
           ],
         ),
       ),

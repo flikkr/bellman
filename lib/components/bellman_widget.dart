@@ -1,7 +1,8 @@
 import 'package:bellman/components/bellman_provider.dart';
-import 'package:bellman/components/show_dialog.dart';
+import 'package:bellman/components/dialog/show_dialog.dart';
 import 'package:bellman/util/bellman_config.dart';
 import 'package:bellman/data/bellman_data.dart';
+import 'package:bellman/util/bellman_dialog_config.dart';
 import 'package:bellman/util/bellman_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -11,12 +12,14 @@ class BellmanWidget extends StatefulWidget {
   final Widget child;
   final BellmanConfig? config;
   final BellmanData? data;
+  final BellmanDialogConfig? dialogConfig;
 
   const BellmanWidget({
     super.key,
     required this.child,
     required this.data,
     this.config,
+    this.dialogConfig,
   });
 
   @override
@@ -25,11 +28,13 @@ class BellmanWidget extends StatefulWidget {
 
 class _BellmanWidgetState extends State<BellmanWidget> {
   late BellmanConfig config;
+  late BellmanDialogConfig dialogConfig;
 
   @override
   void initState() {
     super.initState();
     config = widget.config ?? BellmanConfig();
+    dialogConfig = widget.dialogConfig ?? BellmanDialogConfig();
   }
 
   @override
@@ -44,7 +49,12 @@ class _BellmanWidgetState extends State<BellmanWidget> {
             data: widget.data,
             storage: storage,
             child: FutureBuilder(
-              future: _showDialog(context, storage),
+              future: _showDialog(
+                context: context,
+                storage: storage,
+                config: config,
+                dialogConfig: dialogConfig,
+              ),
               builder: (context, snapshot) => widget.child,
             ),
           );
@@ -56,7 +66,12 @@ class _BellmanWidgetState extends State<BellmanWidget> {
     );
   }
 
-  Future<void> _showDialog(BuildContext context, BellmanStorage storage) async {
+  Future<void> _showDialog({
+    required BuildContext context,
+    required BellmanStorage storage,
+    required BellmanConfig config,
+    required BellmanDialogConfig dialogConfig,
+  }) async {
     // check whether a dialog is currently being shown
     if (ModalRoute.of(context)?.isCurrent != true) {
       Navigator.pop(context);
@@ -69,12 +84,15 @@ class _BellmanWidgetState extends State<BellmanWidget> {
     } else if (config.showAfterDuration != null) {
       await Future.delayed(config.showAfterDuration!);
     }
-    final dialogConfig = config.dialogConfig;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showBellmanDialog(
         context: context,
         data: widget.data,
-        transitionDuration: dialogConfig?.transitionDuration,
+        transitionDuration: dialogConfig.transitionDuration,
+        barrierDismissible: dialogConfig.barrierDismissible,
+        barrierColor: dialogConfig.barrierColor,
+        barrierLabel: dialogConfig.barrierLabel,
+        builder: dialogConfig.builder,
       ).then((_) {
         storage.hasSeenDialog = true;
       });

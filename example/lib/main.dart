@@ -9,27 +9,49 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isLightMode = true;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(
+      darkTheme: isLightMode ? ThemeData.light() : ThemeData.dark(),
+      home: MyHomePage(
         title: 'Bellman Demo',
+        isLightMode: isLightMode,
+        onChangeTheme: (lightMode) {
+          setState(() {
+            isLightMode = lightMode;
+          });
+        },
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
   final String title;
+  final bool isLightMode;
+  final void Function(bool lightMode)? onChangeTheme;
+
+  const MyHomePage({
+    super.key,
+    required this.title,
+    this.isLightMode = true,
+    this.onChangeTheme,
+  });
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -67,6 +89,15 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
+          actions: [
+            IconButton(
+              icon: Icon(widget.isLightMode ? Icons.dark_mode : Icons.light_mode),
+              tooltip: 'Toggle theme',
+              onPressed: () {
+                widget.onChangeTheme?.call(!widget.isLightMode);
+              },
+            )
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),

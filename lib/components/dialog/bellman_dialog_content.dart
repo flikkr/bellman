@@ -6,12 +6,10 @@ import 'package:flutter/material.dart';
 
 class BellmanDialogContent extends StatefulWidget {
   final List<BellmanCategory> categories;
-  final double height;
 
   const BellmanDialogContent({
     super.key,
     required this.categories,
-    required this.height,
   });
 
   @override
@@ -44,8 +42,7 @@ class _BellmanDialogContentState extends State<BellmanDialogContent> {
             children: _mapCategoryToChip(),
           ),
         ),
-        SizedBox(
-          height: widget.height,
+        Expanded(
           child: PageView(
             controller: controller,
             physics: const NeverScrollableScrollPhysics(),

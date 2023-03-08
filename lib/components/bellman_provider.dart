@@ -1,5 +1,6 @@
 import 'package:bellman/data/bellman_data.dart';
 import 'package:bellman/util/bellman_config.dart';
+import 'package:bellman/util/bellman_dialog_config.dart';
 import 'package:bellman/util/bellman_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class Bellman extends InheritedWidget {
   final BellmanConfig config;
   final BellmanStorage storage;
   final BellmanData? data;
+  final BellmanDialogConfig? dialogConfig;
 
   const Bellman({
     super.key,
@@ -14,6 +16,7 @@ class Bellman extends InheritedWidget {
     required this.config,
     required this.storage,
     this.data,
+    this.dialogConfig,
   });
 
   void clearStorage() {
@@ -35,11 +38,13 @@ class Bellman extends InheritedWidget {
     BellmanConfig? config,
     BellmanData? data,
     BellmanStorage? storage,
+    BellmanDialogConfig? dialogConfig,
   }) {
     return Bellman(
       config: config ?? this.config,
       data: data ?? this.data,
       storage: storage ?? this.storage,
+      dialogConfig: dialogConfig ?? this.dialogConfig,
       child: child ?? this.child,
     );
   }

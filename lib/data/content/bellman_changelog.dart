@@ -51,7 +51,7 @@ class BellmanChangelog implements IBellmanContent {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('- '),
-                    Expanded(child: Text(change)),
+                    Expanded(child: SelectableText(change)),
                   ],
                 ),
               ),

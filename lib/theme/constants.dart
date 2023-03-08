@@ -10,4 +10,8 @@ const smallBreakpoint = 480.0;
 const mediumBreakpoint = 768.0;
 const largeBreakpoint = 1024.0;
 
-const defaultDialogBorderRadius = 8.0;
+/* --------------------------------- Dialog --------------------------------- */
+const kDialogBorderRadius = 8.0;
+const kDialogBarrierColor = Colors.black54;
+const kDialogBarrierDismissible = false;
+const kDialogTransitionDuration = Duration(milliseconds: 300);
