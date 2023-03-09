@@ -12,7 +12,6 @@ class BellmanDialogHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return Material(
       color: theme.colorScheme.primary,
       child: Padding(
@@ -22,7 +21,7 @@ class BellmanDialogHeader extends StatelessWidget {
             Expanded(
               child: title ??
                   Text(
-                    "What's new!",
+                    dialogHeadlineText,
                     style: theme.textTheme.headlineSmall?.copyWith(
                       color: theme.colorScheme.onPrimary,
                     ),

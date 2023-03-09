@@ -1,8 +1,8 @@
-class ChangelogData {
+class Changelog {
   final String title;
   final List<String> changes;
 
-  ChangelogData({
+  Changelog({
     required this.title,
     required this.changes,
   });

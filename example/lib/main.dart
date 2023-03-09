@@ -164,14 +164,14 @@ final bellmanCategories = [
   BellmanCategory(
     displayTitle: "📣 Changelog",
     content: BellmanChangelog(changelog: [
-      ChangelogData(
+      Changelog(
         title: "🎉 New features",
         changes: [
           "Added page for doing XYZ",
           "Added button to invite friends to join the app",
         ],
       ),
-      ChangelogData(
+      Changelog(
         title: "🚀 Improvements",
         changes: [
           "Improved layout on analytics screen",
@@ -179,7 +179,7 @@ final bellmanCategories = [
           "Added translations for French, Italian, and German"
         ],
       ),
-      ChangelogData(
+      Changelog(
         title: "🐛 Bug fixes",
         changes: [
           "Fixed crash when making payment",
@@ -194,6 +194,9 @@ final bellmanCategories = [
     displayTitle: "📚 Markdown",
     content: BellmanMarkdown(
       markdown: markdown,
+      onTapLink: (_, href, __) {
+        print("Go to $href!");
+      },
     ),
   ),
   BellmanCategory(
@@ -250,7 +253,7 @@ _You **can** combine them_
 
 ## Images
 
-![This is a alt text.](https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s "This is a sample image.")
+![This is a alt text.](https://picsum.photos/200/300 "This is a sample image.")
 
 ## Links
 

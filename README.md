@@ -3,17 +3,16 @@
 
 Bellman is a UI library for Flutter that allows you to easily make in-app announcements to your users.
 
-You've probably seen this before, you log in to an app and are shown a dialog or pop-up with the new features and bug fixes since the last app version, or some important announcements before the main app experience. Bellman helps with all that, by abstracting away the implementation, you can have the same experience in your app by providing the data you want to show to your users.
+You've probably encountered this before, you log in to an app and are shown a dialog or popup with the new features and bug fixes since the last app version, or some important announcements before the main app experience. Bellman helps with all that, by abstracting away the implementation, you can have the same experience in your app by providing the data you want to show to your users.
 
 > 🚨 WARNING! This package is still very early stage and experimental. APIs will likely change and cause breaking changes so I do not suggest you use this in any production application yet.
 
 ## Features
 
 - [ ] Deeplink to bellman
-- [ ] Style customisation
+- [x] Style customisation
 - [ ] Theme data
-- [ ] Custom builder
-- [ ] Display on separate page
+- [x] Custom builder
 
 ## Usage
 
@@ -33,8 +32,11 @@ Optionally, you can pass in a `BellmanConfig` object as parameter to configure t
 BellmanWidget(
     config: BellmanConfig(
         displayOption: AppStartDisplay.once,
-        showAfterDuration:,
-        showAfterFunctionEnd:,
+        showAfterDuration: Duration(seconds: 2),
+        // Optionally, the function below has the same behaviour as the above parameter
+        // showAfterFunctionEnds: () async {
+        //     await Future.delayed(Duration(seconds: 2));
+        // }
     ),
 )
 ```
@@ -42,18 +44,62 @@ BellmanWidget(
 ### What can I use it for?
 
 Bellman comes ready with a few preconfigured widgets out of the box. Just provide some data
-and you don't have to worry about how it's displayed to your users.
+and they will automatically display according to their type.
 
 - Changelog
-- Text/Markdown
-- Image carousel
+- Markdown
 - Custom
 
 #### Changelog
 
-When building an app, it's not unusual to update your users on any new developments such as features, bug fixes, improvements, etc. `BellmanChangelog` helps with that by making it easy to display those changes separated by category. 
+When building an app, it's not unusual to update your users on new developments such as features, 
+bug fixes, improvements, etc. 
+
+Pass in a list of `Changelog` to the `BellmanCategory` widget to display all your changes to
+your users.
+
+```dart
+BellmanCategory(
+    displayTitle: "📣 Changelog",
+    content: BellmanChangelog(changelog: [
+        Changelog(
+            title: "🎉 New features",
+            changes: [
+                "Added page for doing XYZ",
+                "Added button to invite friends to join the app",
+            ],
+        ),
+        Changelog(
+            title: "🚀 Improvements",
+            changes: [
+                "Improved layout on analytics screen",
+                "Added translations for French, Italian, and German"
+            ],
+        ),
+    ]),
+  ),
+```
 
 #### Markdown
+
+If you want to render rich text data with different styles and images, you can use `BellmanMarkdown` 
+for that. Simply pass a string formatted in markdown and the rendering will be handled.
+
+```dart
+BellmanCategory(
+    displayTitle: "📚 Markdown",
+    content: BellmanMarkdown(
+        markdown: '''
+# This is a *Heading* h1
+
+![This is a alt text.](https://picsum.photos/200/300 "This is a sample image.")
+
+This is a [web link](https://markdownlivepreview.com/).
+        ''',
+    ),
+),
+
+```
 
 #### Custom builder
 

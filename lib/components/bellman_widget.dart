@@ -1,4 +1,3 @@
-import 'package:bellman/components/bellman_provider.dart';
 import 'package:bellman/components/dialog/show_dialog.dart';
 import 'package:bellman/util/bellman_config.dart';
 import 'package:bellman/data/bellman_data.dart';
@@ -8,6 +7,23 @@ import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// The core widget to enable Bellman in your application
+///
+/// To use Bellman, simply wrap your app with this widget.
+/// ```
+/// void main() {
+///     runApp(
+///         BellmanWidget(child: MyApp()),
+///     );
+/// }
+/// ```
+///
+/// Pass the rest of your widgets through [child]. Provide your data to display through [data].
+///
+/// Optionally, you can configure how Bellman should behave by passing in a [config] object, like
+/// whether to show it on app start or not.
+/// You can also configure different options for the dialog, like whether to make it dismissible
+/// or not.
 class BellmanWidget extends StatefulWidget {
   final Widget child;
   final BellmanConfig? config;
@@ -44,22 +60,17 @@ class _BellmanWidgetState extends State<BellmanWidget> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final storage = BellmanStorage(sharedPreferences: snapshot.data!);
-          return Bellman(
-            config: config,
-            data: widget.data,
-            storage: storage,
-            child: FutureBuilder(
-              future: _showDialog(
-                context: context,
-                storage: storage,
-                config: config,
-                dialogConfig: dialogConfig,
-              ),
-              builder: (context, snapshot) => widget.child,
+          return FutureBuilder(
+            future: _showDialog(
+              context: context,
+              storage: storage,
+              config: config,
+              dialogConfig: dialogConfig,
             ),
+            builder: (context, snapshot) => widget.child,
           );
         } else {
-          // Sharedprefs not ready yet
+          // Shared prefs not ready yet
           return Container();
         }
       },

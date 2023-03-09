@@ -1,15 +1,17 @@
-import 'package:bellman/data/content/bellman_changelog_data.dart';
+import 'package:bellman/data/content/changelog.dart';
 import 'package:bellman/data/content/bellman_content_interface.dart';
 import 'package:bellman/theme/constants.dart';
 import 'package:flutter/material.dart';
 
 class BellmanChangelog implements IBellmanContent {
-  final List<ChangelogData> changelog;
+  final List<Changelog> changelog;
   final String? appVersion;
+  final Widget Function(BuildContext context, int index)? itemBuilder;
 
   BellmanChangelog({
     required this.changelog,
     this.appVersion,
+    this.itemBuilder,
   });
 
   @override
@@ -20,20 +22,24 @@ class BellmanChangelog implements IBellmanContent {
         right: paddingValue,
         bottom: paddingValue,
       ),
-      children: changelog
-          .map(
-            (data) => _displaySingleChangelog(
+      children: changelog.asMap().entries.map(
+        (entry) {
+          if (itemBuilder != null) {
+            return itemBuilder!(context, entry.key);
+          } else {
+            return _displaySingleChangelog(
               context: context,
-              changelog: data,
-            ),
-          )
-          .toList(),
+              changelog: entry.value,
+            );
+          }
+        },
+      ).toList(),
     );
   }
 
   Widget _displaySingleChangelog({
     required BuildContext context,
-    required ChangelogData changelog,
+    required Changelog changelog,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

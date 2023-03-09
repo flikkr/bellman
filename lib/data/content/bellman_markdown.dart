@@ -6,13 +6,11 @@ import 'package:markdown/markdown.dart' as md;
 
 class BellmanMarkdown implements IBellmanContent {
   final String markdown;
-  final MarkdownStyleSheet? markdownStyleSheet;
   final MarkdownTapLinkCallback? onTapLink;
 
   BellmanMarkdown({
     required this.markdown,
     this.onTapLink,
-    this.markdownStyleSheet,
   });
 
   @override
@@ -24,7 +22,6 @@ class BellmanMarkdown implements IBellmanContent {
         right: paddingValue,
         bottom: paddingValue,
       ),
-      styleSheet: markdownStyleSheet,
       onTapLink: onTapLink,
       selectable: true,
       extensionSet: md.ExtensionSet(

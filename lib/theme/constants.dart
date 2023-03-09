@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 
-const yGap = SizedBox(height: spacingValue);
-const xGap = SizedBox(width: spacingValue);
+/* --------------------------------- Spacing -------------------------------- */
+const SizedBox yGap = SizedBox(height: spacingValue);
+const SizedBox xGap = SizedBox(width: spacingValue);
 
-const spacingValue = 4.0;
-const paddingValue = 10.0;
+const double spacingValue = 4.0;
+const double paddingValue = 10.0;
 
-const smallBreakpoint = 480.0;
-const mediumBreakpoint = 768.0;
-const largeBreakpoint = 1024.0;
+const double smallBreakpoint = 480.0;
+const double mediumBreakpoint = 768.0;
+const double largeBreakpoint = 1024.0;
 
 /* --------------------------------- Dialog --------------------------------- */
-const kDialogBorderRadius = 8.0;
-const kDialogBarrierColor = Colors.black54;
-const kDialogBarrierDismissible = false;
-const kDialogTransitionDuration = Duration(milliseconds: 300);
+const double kDialogBorderRadius = 8.0;
+const Color kDialogBarrierColor = Colors.black54;
+const bool kDialogBarrierDismissible = false;
+const Duration kDialogTransitionDuration = Duration(milliseconds: 300);
+
+const String dialogHeadlineText = "What's new!";
