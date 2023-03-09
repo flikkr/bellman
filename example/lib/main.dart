@@ -1,5 +1,6 @@
 import 'package:bellman/data/bellman_category.dart';
 import 'package:bellman/data/bellman_data.dart';
+import 'package:bellman/util/bellman_dialog_config.dart';
 import 'package:flutter/material.dart';
 import 'package:bellman/bellman.dart';
 
@@ -61,7 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
   static const gap = SizedBox(height: 4.0);
 
   GlobalKey key = GlobalKey();
-  BellmanConfig bellmanConfig = BellmanConfig();
+  BellmanConfig config = BellmanConfig();
+  BellmanDialogConfig dialogConfig = BellmanDialogConfig(
+    barrierDismissible: true,
+    barrierLabel: 'Dismiss Bellman dialog',
+  );
+  BellmanData data = BellmanData(categories: bellmanCategories);
 
   bool showOnceOnAppStart = false;
   bool showAlwaysOnAppStart = true;
@@ -82,10 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return BellmanWidget(
-      config: bellmanConfig,
-      data: BellmanData(
-        categories: bellmanCategories,
-      ),
+      config: config,
+      dialogConfig: dialogConfig,
+      data: data,
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -105,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               TextFormField(
                 keyboardType: TextInputType.number,
-                initialValue: bellmanConfig.showAfterDuration?.inMilliseconds.toString(),
+                initialValue: config.showAfterDuration?.inMilliseconds.toString(),
                 onChanged: (value) {
                   if (value.isEmpty) return;
                   // sharedPref.setInt(showAfterDurationKey, int.parse(value));
@@ -132,7 +137,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        floatingActionButton: const Fab(),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            showBellmanDialog(
+              context: context,
+              dialogConfig: dialogConfig,
+              data: data,
+            );
+          },
+          label: const Text('Show dialog'),
+        ),
       ),
     );
   }
@@ -142,23 +156,6 @@ class _MyHomePageState extends State<MyHomePage> {
       labelText: labelText,
       isDense: true,
       floatingLabelBehavior: FloatingLabelBehavior.auto,
-    );
-  }
-}
-
-class Fab extends StatelessWidget {
-  const Fab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
-      onPressed: () {
-        showBellmanDialog(
-          context: context,
-          // barrierDismissible: true,
-        );
-      },
-      label: const Text('Show dialog'),
     );
   }
 }

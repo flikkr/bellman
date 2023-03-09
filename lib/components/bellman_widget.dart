@@ -72,6 +72,8 @@ class _BellmanWidgetState extends State<BellmanWidget> {
     required BellmanConfig config,
     required BellmanDialogConfig dialogConfig,
   }) async {
+    final data = widget.data;
+    if (data == null) return;
     // check whether a dialog is currently being shown
     if (ModalRoute.of(context)?.isCurrent != true) {
       Navigator.pop(context);
@@ -87,12 +89,8 @@ class _BellmanWidgetState extends State<BellmanWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showBellmanDialog(
         context: context,
-        data: widget.data,
-        transitionDuration: dialogConfig.transitionDuration,
-        barrierDismissible: dialogConfig.barrierDismissible,
-        barrierColor: dialogConfig.barrierColor,
-        barrierLabel: dialogConfig.barrierLabel,
-        builder: dialogConfig.builder,
+        data: data,
+        dialogConfig: dialogConfig,
       ).then((_) {
         storage.hasSeenDialog = true;
       });
