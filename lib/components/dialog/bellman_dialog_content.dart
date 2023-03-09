@@ -1,7 +1,6 @@
-import 'dart:io';
 
+import 'package:bellman/components/dialog/bellman_dialog_chip_list.dart';
 import 'package:bellman/data/bellman_category.dart';
-import 'package:bellman/theme/constants.dart';
 import 'package:flutter/material.dart';
 
 class BellmanDialogContent extends StatefulWidget {
@@ -32,15 +31,12 @@ class _BellmanDialogContentState extends State<BellmanDialogContent> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: paddingValue,
-            vertical: Platform.isAndroid || Platform.isIOS ? paddingValue / 2 : paddingValue,
-          ),
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: _mapCategoryToChip(),
-          ),
+        BellmanDialogChipList(
+          categories: widget.categories.map((cat) => cat.displayTitle).toList(),
+          initialIndex: selectedIndex,
+          onTap: (index) {
+            controller.jumpToPage(index);
+          },
         ),
         Expanded(
           child: PageView(
@@ -55,29 +51,5 @@ class _BellmanDialogContentState extends State<BellmanDialogContent> {
         ),
       ],
     );
-  }
-
-  List<Widget> _mapCategoryToChip() {
-    final categories = widget.categories;
-    List<Widget> chips = [];
-    for (int i = 0; i < categories.length; i++) {
-      chips.add(
-        ChoiceChip(
-          pressElevation: 4,
-          label: Text(categories[i].displayTitle),
-          selected: selectedIndex == i,
-          onSelected: (value) {
-            setState(() {
-              selectedIndex = i;
-              controller.jumpToPage(i);
-            });
-          },
-        ),
-      );
-      if (i != widget.categories.length) {
-        chips.add(xGap);
-      }
-    }
-    return chips;
   }
 }

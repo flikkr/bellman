@@ -88,8 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return BellmanWidget(
-      config: config,
       dialogConfig: dialogConfig,
+      config: config,
       data: data,
       child: Scaffold(
         appBar: AppBar(
