@@ -12,7 +12,11 @@ class BellmanStorage {
     required this.sharedPreferences,
   });
 
-  Future<bool> clearStorage() => sharedPreferences.clear();
+  /// Clear all Bellman data from local storage
+  Future<void> clearStorage() async {
+    await sharedPreferences.remove(seenKey);
+    await sharedPreferences.remove(lastSeenVersionKey);
+  }
 
   /// [hasSeenDialog] indicates whether the dialog has been shown to the user and is set to `true`
   /// if that is the case

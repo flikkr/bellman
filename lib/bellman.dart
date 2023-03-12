@@ -2,7 +2,7 @@ library bellman;
 
 export 'package:bellman/components/dialog/bellman_dialog.dart' show BellmanDialog;
 export 'package:bellman/components/bellman_widget.dart' show BellmanWidget;
-export 'package:bellman/components/dialog/show_dialog.dart' show showBellmanDialog;
+export 'package:bellman/components/dialog/bellman_navigation.dart' show showBellmanDialog;
 export 'package:bellman/data/content/bellman_markdown.dart' show BellmanMarkdown;
 export 'package:bellman/data/content/bellman_custom_builder.dart' show BellmanCustomBuilder;
 export 'package:bellman/data/content/bellman_changelog.dart' show BellmanChangelog;

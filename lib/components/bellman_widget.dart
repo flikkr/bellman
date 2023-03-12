@@ -1,4 +1,5 @@
-import 'package:bellman/components/dialog/show_dialog.dart';
+import 'package:bellman/components/dialog/bellman_navigation.dart';
+import 'package:bellman/theme/bellman_style.dart';
 import 'package:bellman/util/bellman_config.dart';
 import 'package:bellman/data/bellman_data.dart';
 import 'package:bellman/util/bellman_dialog_config.dart';
@@ -23,12 +24,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Optionally, you can configure how Bellman should behave by passing in a [config] object, like
 /// whether to show it on app start or not.
 /// You can also configure different options for the dialog, like whether to make it dismissible
-/// or not.
+/// or not by using [dialogConfig].
+/// To configure UI elements of the widget, use [style].
 class BellmanWidget extends StatefulWidget {
   final Widget child;
-  final BellmanConfig? config;
   final BellmanData? data;
+  final BellmanConfig? config;
   final BellmanDialogConfig? dialogConfig;
+  final BellmanStyle? style;
 
   const BellmanWidget({
     super.key,
@@ -36,6 +39,7 @@ class BellmanWidget extends StatefulWidget {
     required this.data,
     this.config,
     this.dialogConfig,
+    this.style,
   });
 
   @override
@@ -45,12 +49,14 @@ class BellmanWidget extends StatefulWidget {
 class _BellmanWidgetState extends State<BellmanWidget> {
   late BellmanConfig config;
   late BellmanDialogConfig dialogConfig;
+  late BellmanStyle style;
 
   @override
   void initState() {
     super.initState();
     config = widget.config ?? BellmanConfig();
     dialogConfig = widget.dialogConfig ?? BellmanDialogConfig();
+    style = widget.style ?? BellmanStyle();
   }
 
   @override
@@ -66,6 +72,7 @@ class _BellmanWidgetState extends State<BellmanWidget> {
               storage: storage,
               config: config,
               dialogConfig: dialogConfig,
+              style: style,
             ),
             builder: (context, snapshot) => widget.child,
           );
@@ -82,6 +89,7 @@ class _BellmanWidgetState extends State<BellmanWidget> {
     required BellmanStorage storage,
     required BellmanConfig config,
     required BellmanDialogConfig dialogConfig,
+    required BellmanStyle style,
   }) async {
     final data = widget.data;
     if (data == null) return;
@@ -102,6 +110,7 @@ class _BellmanWidgetState extends State<BellmanWidget> {
         context: context,
         data: data,
         dialogConfig: dialogConfig,
+        style: style,
       ).then((_) {
         storage.hasSeenDialog = true;
       });

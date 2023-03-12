@@ -3,14 +3,16 @@ import 'package:bellman/data/content/bellman_content_interface.dart';
 import 'package:bellman/theme/constants.dart';
 import 'package:flutter/material.dart';
 
+/// Used for displaying changes to your app in a bulleted list.
+/// 
+/// Provide a list of changes by passing data in [changelog]. If you want to build a custom UI
+/// for each item in the changelog, use [itemBuilder] to build items by index.
 class BellmanChangelog implements IBellmanContent {
   final List<Changelog> changelog;
-  final String? appVersion;
   final Widget Function(BuildContext context, int index)? itemBuilder;
 
   BellmanChangelog({
     required this.changelog,
-    this.appVersion,
     this.itemBuilder,
   });
 

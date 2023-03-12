@@ -15,6 +15,7 @@ const double largeBreakpoint = 1024.0;
 const double kDialogBorderRadius = 8.0;
 const Color kDialogBarrierColor = Colors.black54;
 const bool kDialogBarrierDismissible = false;
-const Duration kDialogTransitionDuration = Duration(milliseconds: 300);
+const Duration kDialogTransitionDuration = Duration(milliseconds: 200);
+const BoxConstraints kDialogConstraints = BoxConstraints(maxWidth: 600, maxHeight: 500);
 
 const String dialogHeadlineText = "What's new!";
