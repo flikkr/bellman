@@ -1,10 +1,11 @@
+import 'package:bellman/components/bellman_provider.dart';
+import 'package:bellman/components/bellman_widget.dart';
 import 'package:bellman/data/bellman_category.dart';
 import 'package:bellman/data/bellman_data.dart';
+import 'package:bellman/util/bellman_config.dart';
 import 'package:bellman/util/bellman_dialog_config.dart';
 import 'package:flutter/material.dart';
 import 'package:bellman/bellman.dart';
-
-import 'checkbox_field.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +14,10 @@ void main() {
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  static void simulateRestart(BuildContext context) {
+    context.findAncestorStateOfType<_MyAppState>()?.simulateRestart(context);
+  }
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -20,25 +25,56 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isLightMode = true;
 
+  BellmanConfig config = BellmanConfig();
+  BellmanDialogConfig dialogConfig = BellmanDialogConfig(
+    barrierDismissible: true,
+    barrierLabel: 'Dismiss Bellman dialog',
+  );
+  BellmanData data = BellmanData(
+    categories: bellmanCategories,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+
+    // config = config.copyWith(
+    //   showAfterDuration: config.showAfterDuration == null
+    //       ? null
+    //       : Duration(
+    //           milliseconds: config.showAfterDuration,
+    //         ),
+    // );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      darkTheme: isLightMode ? ThemeData.light() : ThemeData.dark(),
-      home: MyHomePage(
-        title: 'Bellman Demo',
-        isLightMode: isLightMode,
-        onChangeTheme: (lightMode) {
-          setState(() {
-            isLightMode = lightMode;
-          });
-        },
+    return BellmanWidget(
+      data: data,
+      config: config,
+      dialogConfig: dialogConfig,
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        darkTheme: isLightMode ? ThemeData.light() : ThemeData.dark(),
+        home: MyHomePage(
+          title: 'Bellman Demo',
+          isLightMode: isLightMode,
+          onChangeTheme: (lightMode) {
+            setState(() {
+              isLightMode = lightMode;
+            });
+          },
+        ),
       ),
     );
+  }
+
+  void simulateRestart(BuildContext context) {
+    setState(() {});
   }
 }
 
@@ -46,12 +82,14 @@ class MyHomePage extends StatefulWidget {
   final String title;
   final bool isLightMode;
   final void Function(bool lightMode)? onChangeTheme;
+  final void Function(BellmanConfig config, BellmanDialogConfig dialogConfig)? onChangeBellman;
 
   const MyHomePage({
     super.key,
     required this.title,
     this.isLightMode = true,
     this.onChangeTheme,
+    this.onChangeBellman,
   });
 
   @override
@@ -61,92 +99,74 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   static const gap = SizedBox(height: 4.0);
 
-  GlobalKey key = GlobalKey();
-  BellmanConfig config = BellmanConfig();
-  BellmanDialogConfig dialogConfig = BellmanDialogConfig(
-    barrierDismissible: true,
-    barrierLabel: 'Dismiss Bellman dialog',
-  );
-  BellmanData data = BellmanData(categories: bellmanCategories);
-
-  bool showOnceOnAppStart = false;
-  bool showAlwaysOnAppStart = true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // bellmanConfig = bellmanConfig.copyWith(
-    //   showAfterDuration: showAfterDuration == null
-    //       ? null
-    //       : Duration(
-    //           milliseconds: showAfterDuration,
-    //         ),
-    // );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BellmanWidget(
-      dialogConfig: dialogConfig,
-      config: config,
-      data: data,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          actions: [
-            IconButton(
-              icon: Icon(widget.isLightMode ? Icons.dark_mode : Icons.light_mode),
-              tooltip: 'Toggle theme',
-              onPressed: () {
-                widget.onChangeTheme?.call(!widget.isLightMode);
+    // final bellmanProvider =
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: Icon(widget.isLightMode ? Icons.dark_mode : Icons.light_mode),
+            tooltip: 'Toggle theme',
+            onPressed: () {
+              widget.onChangeTheme?.call(!widget.isLightMode);
+            },
+          )
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            TextFormField(
+              keyboardType: TextInputType.number,
+              initialValue: Bellman.of(context).config?.showAfterDuration?.inMilliseconds.toString(),
+              onChanged: (value) {
+                if (value.isEmpty) return;
+                // sharedPref.setInt(showAfterDurationKey, int.parse(value));
               },
-            )
+              decoration: getInputDecoration('Open after delay (in ms)'),
+            ),
+            gap,
+            DropdownButtonFormField(
+              value: AppStartDisplay.never,
+              items: const [
+                DropdownMenuItem(
+                  value: AppStartDisplay.once,
+                  child: Text('Display once on startup'),
+                ),
+                DropdownMenuItem(
+                  value: AppStartDisplay.always,
+                  child: Text('Always display on startup'),
+                ),
+                DropdownMenuItem(
+                  value: AppStartDisplay.never,
+                  child: Text('Never display on startup'),
+                ),
+              ],
+              onChanged: (value) {},
+            ),
+            gap,
+            ElevatedButton(
+              onPressed: () {
+                MyApp.simulateRestart(context);
+              },
+              child: const Text('Simulate app restart'),
+            ),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              TextFormField(
-                keyboardType: TextInputType.number,
-                initialValue: config.showAfterDuration?.inMilliseconds.toString(),
-                onChanged: (value) {
-                  if (value.isEmpty) return;
-                  // sharedPref.setInt(showAfterDurationKey, int.parse(value));
-                },
-                decoration: getInputDecoration('Open after delay (in ms)'),
-              ),
-              gap,
-              CheckboxField(
-                initialValue: false,
-                title: const Text('Show once on app start'),
-                onChanged: (value) {},
-              ),
-              gap,
-              CheckboxField(
-                initialValue: false,
-                title: const Text('Show always on app start'),
-                onChanged: (value) {},
-              ),
-              gap,
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Clear storage'),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            showBellmanDialog(
-              context: context,
-              dialogConfig: dialogConfig,
-              data: data,
-            );
-          },
-          label: const Text('Show dialog'),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          final bellman = Bellman.of(context);
+          bellman.showDialog(
+            context: context,
+            dialogConfig: bellman.dialogConfig,
+            data: bellman.data!,
+          );
+        },
+        label: const Text('Show dialog'),
       ),
     );
   }
@@ -203,12 +223,15 @@ final bellmanCategories = [
     displayTitle: "✨ Custom builder",
     content: BellmanCustomBuilder(
       builder: (context) {
-        return Column(
-          children: const [
-            Text('This is some custom flutter code!'),
-            SizedBox(height: 10),
-            FlutterLogo(size: 100),
-          ],
+        return Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              Text('This is some custom flutter code!'),
+              SizedBox(height: 10),
+              FlutterLogo(size: 100),
+            ],
+          ),
         );
       },
     ),

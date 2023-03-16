@@ -83,7 +83,7 @@ BellmanCategory(
 #### Markdown
 
 If you want to render rich text data with different styles and images, you can use `BellmanMarkdown` 
-for that. Simply pass a string formatted in markdown and the rendering will be handled.
+for that. Simply pass a string formatted in markdown and the text will be rendered accordingly.
 
 ```dart
 BellmanCategory(
