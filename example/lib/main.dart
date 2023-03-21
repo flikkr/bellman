@@ -1,5 +1,3 @@
-import 'package:bellman/components/bellman_provider.dart';
-import 'package:bellman/components/bellman_widget.dart';
 import 'package:bellman/data/bellman_category.dart';
 import 'package:bellman/data/bellman_data.dart';
 import 'package:bellman/util/bellman_config.dart';
@@ -35,34 +33,26 @@ class _MyAppState extends State<MyApp> {
   );
 
   @override
-  void initState() {
-    super.initState();
-
-    // config = config.copyWith(
-    //   showAfterDuration: config.showAfterDuration == null
-    //       ? null
-    //       : Duration(
-    //           milliseconds: config.showAfterDuration,
-    //         ),
-    // );
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BellmanWidget(
-      data: data,
-      config: config,
-      dialogConfig: dialogConfig,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        darkTheme: isLightMode ? ThemeData.light() : ThemeData.dark(),
-        home: MyHomePage(
+    return MaterialApp(
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      darkTheme: isLightMode ? ThemeData.light() : ThemeData.dark(),
+      home: BellmanWidget(
+        data: data,
+        config: config,
+        dialogConfig: dialogConfig,
+        child: MyHomePage(
           title: 'Bellman Demo',
           isLightMode: isLightMode,
+          onChangeConfig: (config) {
+            setState(() {
+              this.config = config;
+            });
+          },
           onChangeTheme: (lightMode) {
             setState(() {
               isLightMode = lightMode;
@@ -82,14 +72,14 @@ class MyHomePage extends StatefulWidget {
   final String title;
   final bool isLightMode;
   final void Function(bool lightMode)? onChangeTheme;
-  final void Function(BellmanConfig config, BellmanDialogConfig dialogConfig)? onChangeBellman;
+  final void Function(BellmanConfig config)? onChangeConfig;
 
   const MyHomePage({
     super.key,
     required this.title,
     this.isLightMode = true,
     this.onChangeTheme,
-    this.onChangeBellman,
+    this.onChangeConfig,
   });
 
   @override
@@ -130,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             gap,
             DropdownButtonFormField(
-              value: AppStartDisplay.never,
+              value: Bellman.of(context).config?.displayOption,
               items: const [
                 DropdownMenuItem(
                   value: AppStartDisplay.once,
@@ -145,14 +135,38 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text('Never display on startup'),
                 ),
               ],
-              onChanged: (value) {},
+              onChanged: (value) {
+                final config = Bellman.of(context).config;
+                if (config == null) return;
+                widget.onChangeConfig?.call(config.copyWith(displayOption: value));
+              },
             ),
             gap,
             ElevatedButton(
               onPressed: () {
                 MyApp.simulateRestart(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('App restarted'),
+                    duration: Duration(milliseconds: 500),
+                  ),
+                );
               },
               child: const Text('Simulate app restart'),
+            ),
+            gap,
+            ElevatedButton(
+              onPressed: () {
+                final bellman = Bellman.of(context);
+                bellman.storage.clearStorage();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Local storage has been cleared'),
+                    duration: Duration(milliseconds: 500),
+                  ),
+                );
+              },
+              child: const Text('Clear Bellman data'),
             ),
           ],
         ),

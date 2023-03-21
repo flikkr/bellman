@@ -23,10 +23,6 @@ class Bellman extends InheritedWidget {
     this.style,
   });
 
-  void clearStorage() {
-    storage.clearStorage();
-  }
-
   static Bellman? maybeOf(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<Bellman>();
   }

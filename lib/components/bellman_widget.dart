@@ -193,13 +193,12 @@ class _BellmanWidgetChildState extends State<BellmanWidgetChild> {
   }) async {
     final bellman = Bellman.of(context);
     final data = bellman.data;
+
     if (data == null) return;
-    // check whether a dialog is currently being shown
-    if (ModalRoute.of(context)?.isCurrent != true) {
-      Navigator.pop(context);
-    }
     final dontShow = config.displayOption == AppStartDisplay.never;
-    final hasSeenDialog = config.displayOption == AppStartDisplay.once && storage.hasSeenDialog;
+    final hasSeenDialog =
+        (config.displayOption == AppStartDisplay.once && storage.hasSeenBellman) || storage.hasSeenInSession;
+
     if (dontShow || hasSeenDialog) return;
     if (config.showAfterFunctionEnd != null) {
       config.showAfterFunctionEnd?.call();
@@ -207,6 +206,10 @@ class _BellmanWidgetChildState extends State<BellmanWidgetChild> {
       await Future.delayed(config.showAfterDuration!);
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // check whether a dialog is currently being shown
+      if (ModalRoute.of(context)?.isCurrent != true) {
+        Navigator.pop(context);
+      }
       Bellman.of(context)
           .showDialog(
         context: context,
@@ -215,7 +218,8 @@ class _BellmanWidgetChildState extends State<BellmanWidgetChild> {
         style: style,
       )
           .then((_) {
-        storage.hasSeenDialog = true;
+        storage.hasSeenBellman = true;
+        storage.hasSeenInSession = true;
       });
     });
   }
